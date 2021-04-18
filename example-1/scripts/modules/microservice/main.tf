@@ -14,7 +14,7 @@ variable "service_type" {
 }
 
 variable "session_affinity" {
-    default = ""
+    default = "None"
 }
 
 variable "env" {

@@ -1,4 +1,3 @@
-
 resource "kubernetes_deployment" "rabbit" {
   metadata {
     name = "rabbit"
