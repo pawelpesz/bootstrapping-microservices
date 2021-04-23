@@ -1,9 +1,19 @@
+resource "random_string" "cluster_name" {
+    length = 24
+    special = false
+    upper = false
+}
+
+locals {
+    cluster_name = substr(join("-", [var.app_name, random_string.cluster_name.result]), 0, 24)
+}
+
 resource "azurerm_kubernetes_cluster" "cluster" {
-    name                = var.app_name
+    name                = local.cluster_name
     location            = var.location
     resource_group_name = azurerm_resource_group.flixtube.name
-    dns_prefix          = var.app_name
-    kubernetes_version  = "1.18.8"
+    dns_prefix          = local.cluster_name
+    kubernetes_version  = "1.20.5"
 
     linux_profile {
         admin_username = var.admin_username
@@ -15,8 +25,11 @@ resource "azurerm_kubernetes_cluster" "cluster" {
 
     default_node_pool {
         name            = "default"
-        node_count      = 1
+        #node_count      = 1
         vm_size         = "Standard_B2ms"
+        enable_auto_scaling = true
+        min_count = 1
+        max_count = 5
     }
 
     service_principal {

@@ -1,5 +1,15 @@
+resource "random_string" "container_registry_name" {
+    length = 24
+    special = false
+    upper = false
+}
+
+locals {
+    container_registry_name = substr(join("", [var.app_name, random_string.container_registry_name.result]), 0, 24)
+}
+
 resource "azurerm_container_registry" "container_registry" {
-    name                = var.app_name
+    name                = local.container_registry_name
     resource_group_name = azurerm_resource_group.flixtube.name
     location            = var.location
     admin_enabled       = true
