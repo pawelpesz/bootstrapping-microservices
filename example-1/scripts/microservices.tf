@@ -53,9 +53,7 @@ module "azure-storage-microservice" {
     password = local.password
     app_version = var.app_version
     env = {
-        #STORAGE_ACCOUNT_NAME = var.storage_account_name
         STORAGE_ACCOUNT_NAME = azurerm_storage_account.flixtube.name
-        #STORAGE_ACCESS_KEY = var.storage_access_key
         STORAGE_ACCESS_KEY = azurerm_storage_account.flixtube.primary_access_key
     }
 }
